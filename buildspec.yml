@@ -1,0 +1,30 @@
+version: 0.2
+
+env:
+  variables:
+    ECR_REGION: "us-east-1"
+    IMAGE_NAME: "beanstalkd"
+    IMAGE_TAG: "latest"
+
+phases:
+  pre_build:
+    commands:
+      - echo logging in to AWS ECR...
+      - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
+      - ECR_URL="$AWS_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com"
+      - echo ECR_URL="$ECR_URL"
+      - echo IMAGE_TAG="$IMAGE_TAG"
+      - $(aws ecr get-login --no-include-email --region $ECR_REGION)
+  build:
+    commands:
+      - echo Entered the build phase...
+      - echo Build started on `date`
+      - echo IMAGE_NAME="$IMAGE_NAME"
+      - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_URL/$IMAGE_NAME:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo build Docker image complete `date`
+      - echo push latest Docker images to ECR repo $ECR_URL/$IMAGE_NAME ...
+      - docker push $ECR_URL/$IMAGE_NAME
