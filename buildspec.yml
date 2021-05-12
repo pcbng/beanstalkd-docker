@@ -21,7 +21,7 @@ phases:
       - echo Build started on `date`
       - echo IMAGE_NAME="$IMAGE_NAME"
       - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_URL/$IMAGE_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest $ECR_URL/$IMAGE_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo Entered the post_build phase...
