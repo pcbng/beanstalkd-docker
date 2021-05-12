@@ -4,7 +4,6 @@ env:
   variables:
     ECR_REGION: "us-east-1"
     IMAGE_NAME: "beanstalkd"
-    IMAGE_TAG: "latest"
 
 phases:
   pre_build:
@@ -13,6 +12,7 @@ phases:
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
       - ECR_URL="$AWS_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com"
       - echo ECR_URL="$ECR_URL"
+      - IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
       - echo IMAGE_TAG="$IMAGE_TAG"
       - $(aws ecr get-login --no-include-email --region $ECR_REGION)
   build:

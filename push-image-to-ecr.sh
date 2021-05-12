@@ -1,8 +1,17 @@
 #!/bin/bash
 
+# WARNING: ECR repo should exist before starting the script
+
+USAGE="Usage: ./push-image-to-ecr.sh <image-name> <image-tag>"
+
+if [ $# -ne 2 ]; then
+    echo $USAGE
+    exit 1;
+fi
+
 export ECR_REGION="us-east-1"
-export IMAGE_NAME="ubuntu"
-export IMAGE_TAG="15.04"
+export IMAGE_NAME=$1
+export IMAGE_TAG=$2
 
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 

@@ -1,0 +1,1 @@
+./push-image-to-ecr.sh alpine 3.13
