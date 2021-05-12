@@ -1,5 +1,4 @@
-FROM ubuntu:15.04
-MAINTAINER Peter Bakhirev "peter@pcb.ng"
+FROM 026842570183.dkr.ecr.us-east-1.amazonaws.com/ubuntu:15.04
 
 ADD install.sh beanstalkd-1.10.tar.gz /install/
 RUN cd /install && ./install.sh 1.10 && rm -rf /install
